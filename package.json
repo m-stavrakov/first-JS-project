@@ -1,0 +1,22 @@
+{
+  "name": "first-js-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "project.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-stavrakov/first-JS-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m-stavrakov/first-JS-project/issues"
+  },
+  "homepage": "https://github.com/m-stavrakov/first-JS-project#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
