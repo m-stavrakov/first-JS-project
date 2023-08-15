@@ -11,6 +11,27 @@
 
 const prompt = require("prompt-sync")();
 
+//defining some variables that are going to depict how big the slot machine is and how many symbols we can potentially have in each row
+//this defines the num of rolls and symbols 
+//this is a global variable
+const ROWS = 3;
+const COLS = 3;
+
+const SYMBOLS_COUNT = {
+    A: 2,
+    B: 4,
+    C: 6,
+    D: 8,
+};
+
+//multiplier of each symbol
+const SYMBOL_VALUES = {
+    A: 5,
+    B: 4,
+    C: 3,
+    D: 2,
+};
+
 //this is the new preferred way to set a function
 //1. Deposit some money 
 const deposit = () => {
@@ -25,7 +46,7 @@ const deposit = () => {
         return numberDepositAmount;
     }
  }
-}
+};
 
 //2. Determine number of lines to bet on
 const getNumberOfLines = () => {
@@ -40,7 +61,7 @@ const getNumberOfLines = () => {
             return numberOfLines;
         }
      }
-}
+};
 
 ////3. Collect a bet amount
 const getBet = (balance, lines) => {
@@ -55,10 +76,48 @@ const getBet = (balance, lines) => {
             return numberBet;
         }
      }
-}
+};
 
+//4. spin the slot machine
+const spin = () => {
+    //first figure out how many symbols we have (a, b, c, d)
+    // we put all of the possible symbols that we could use inside of a list or inside of an array, 
+    // and then we are going to randomly select them out of the array and remove them from the array every single time that we use them while we are generating each reel
+    //generating individual columns
+    const symbols = []; //having an array allows us to use const as it doesn't change the variable just manipulates what's inside the array
+    for (const [symbol, count] of Object.entries(SYMBOLS_COUNT)) {
+        for (let i = 0; i < count; i++) {
+            symbols.push(symbol); //this pushes them into the array of const symbols, PUSH inserts an element into an array
+        }
+    }
 
+    const reels = [];
+    for (let i = 0; i < COLS; i++){
+            reels.push([]); //for every single reel or COLS we have we add one inside const reels 
+        const reelSymbols = [...symbols]; //this copies the symbols that we have available to choose for each reel into another array
+        for(let j = 0; j < ROWS; j++){
+            const randomIndex = Math.floor(Math.random() * reelSymbols.length); //math.random generates a random number between 0-1, then we take that number and * it by whatever the length of our reelSymbols is 
+                const selectedSymbol = reelSymbols[randomIndex];
+                reels[i].push(selectedSymbol);
+                reelSymbols.splice(randomIndex, 1)
+        }
+    }
 
+    return reels
+};
+
+//explanation for above
+//1. Generate an array of all of the available symbols that we can pick from when we are going to randomly choose what's inside of each reel (line 82)
+//2. Then we create an array (line 94) kind of temporary array so we have 3 reels
+//3. We loop through (line 95) all of the reels that we have which is represented by the number of COLS  
+//4. Then we copy all of the available symbols (line 97) 
+//5. Then we loop through all of the ROWS (line 98), all of the row is the number of symbols that we are going to have in each reel 
+//6. Then we randomly generate (line 99) one of the available symbols, we take it and insert it into our reel (line 100)
+//7. We push it to reel which is represented by i 
+//8. Finally, we remove that from the available symbols so we don't select them again 
+
+const reels = spin();
+console.log(reels)
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
 const bet = getBet(balance, numberOfLines);
