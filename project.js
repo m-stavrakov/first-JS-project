@@ -151,7 +151,30 @@ const printRows = (rows) => {
     }
 }
 
+//winnings 
+const getWinnings = (rows, bet, lines) => { //the bet here is the bet per line
+    let winnings = 0;
 
+    for (let row = 0; row < lines; row++) {
+        const symbols = rows[row];
+        let allSame = true;
+
+        for (const symbol of symbols) { //we loop through every single symbol that we have
+            if (symbol != symbols[0]) { //if every symbol that we have is the same as the 1st symbol, meaning we didn't win
+                allSame = false;
+                break;
+            }
+        }
+
+        if (allSame) {
+            winnings += bet * SYMBOL_VALUES[symbols[0]]
+        }
+    }
+
+    return winnings;
+}
+
+//6. Give the user their winnings 
 
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
@@ -159,3 +182,5 @@ const bet = getBet(balance, numberOfLines);
 const reels = spin();
 const rows = transpose(reels);
 printRows(rows);
+const winnings = getWinnings(rows, bet, numberOfLines); 
+console.log("You won, $" + winnings.toString());
