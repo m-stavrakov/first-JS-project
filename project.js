@@ -116,8 +116,46 @@ const spin = () => {
 //7. We push it to reel which is represented by i 
 //8. Finally, we remove that from the available symbols so we don't select them again 
 
-const reels = spin();
-console.log(reels)
+
+//5.Check if the user won 
+//now we have columns we need an array for the rows
+//we have: [[A B C]], [[D D D]], [[A A A]]
+//what we need:
+//[A D A]
+//[B D A]
+//[C D A]
+const transpose = (reels) => {
+    const rows = [];
+
+    for (let i = 0; i < ROWS; i++) {
+        rows.push([]);
+        for(let j = 0; j < COLS; j++) {
+            //now for every column that we have we're going to grab the element that's in the 1st row in that col and push it into our rows
+            rows[i].push(reels[j][i]);
+        }
+    }
+
+    return rows
+}
+
+const printRows = (rows) => {
+    for (const row of rows) { //going through every single row in our rows
+        let rowString = ""; //giving us an array that will be representing the elements in that row
+        for(const [i, symbol] of row.entries()){ //we loop through the i and the symbol that exists in this row (if we have A i=0 symbol=A so on)
+            rowString += symbol
+            if (i != row.length - 1){
+                rowString += " | "
+            }
+        }
+        console.log(rowString);
+    }
+}
+
+
+
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
 const bet = getBet(balance, numberOfLines);
+const reels = spin();
+const rows = transpose(reels);
+printRows(rows);
